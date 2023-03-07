@@ -1,0 +1,75 @@
+import java.util.*;
+
+public class Compiler {G
+    private static final int REGISTERS = 8;
+    private static final int STACK_SIZE = 256;
+    private static final int HEAP_SIZE = 256;
+
+    private static Map<String, Integer> keywords = new HashMap<>();
+
+    static {
+        keywords.put("if", Token.IF);
+        keywords.put("else", Token.ELSE);
+        keywords.put("while", Token.WHILE);
+        keywords.put("for", Token.FOR);
+        keywords.put("break", Token.BREAK);
+        keywords.put("continue", Token.CONTINUE);
+        keywords.put("return", Token.RETURN);
+        keywords.put("int", Token.INT);
+        keywords.put("void", Token.VOID);
+    }
+
+    private static Map<String, Integer> operators = new HashMap<>();
+
+    static {
+        operators.put("+", Token.ADD);
+        operators.put("-", Token.SUB);
+        operators.put("*", Token.MUL);
+        operators.put("/", Token.DIV);
+        operators.put("<", Token.LT);
+        operators.put("<=", Token.LE);
+        operators.put(">", Token.GT);
+        operators.put(">=", Token.GE);
+        operators.put("==", Token.EQ);
+        operators.put("!=", Token.NE);
+        operators.put("=", Token.ASSIGN);
+    }
+
+    private static int[] registers = new int[REGISTERS];
+    private static int[] stack = new int[STACK_SIZE];
+    private static int[] heap = new int[HEAP_SIZE];
+    private static int sp = 0;
+    private static int hp = 0;
+
+    private static String source = "int main() { int x = 1; int y = 2; int z = x + y; return z; }";
+
+    private static List<Token> tokenize(String input) {
+        List<Token> tokens = new ArrayList<>();
+        int i = 0;
+
+        while (i < input.length()) {
+            char c = input.charAt(i);
+
+            if (Character.isWhitespace(c)) {
+                i++;
+                continue;
+            }
+
+            if (Character.isDigit(c)) {
+                int value = 0;
+
+                while (i < input.length() && Character.isDigit(input.charAt(i))) {
+                    value = value * 10 + Character.digit(input.charAt(i), 10);
+                    i++;
+                }
+
+                tokens.add(new Token(Token.NUMBER, value));
+                continue;
+            }
+
+            if (Character.isLetter(c)) {
+                StringBuilder sb = new StringBuilder();
+
+                while (i < input.length() && Character.isLetterOrDigit(input.charAt(i))) {
+                    sb.append(input.charAt(i));
+                   
