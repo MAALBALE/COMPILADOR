@@ -1,0 +1,92 @@
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.util.*;
+import java.util.regex.*;
+
+public class EditorDeCodigo extends JFrame implements ActionListener {
+    JTextArea editor; // Text area para el editor de código
+    JTable tablaTokens, tablaSimbolos; // Tablas para mostrar tokens y símbolos
+    DefaultTableModel modeloTablaTokens, modeloTablaSimbolos; // Modelos de tabla para tokens y símbolos
+    JDialog ventanaTokens, ventanaSimbolos; // Ventanas para mostrar tokens y símbolos
+
+    public EditorDeCodigo() {
+        // Configuración del JFrame
+        super("Editor de Código");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(800, 600);
+
+        // Configuración del menú de opciones
+        JMenuBar menuBar = new JMenuBar();
+        JMenu archivo = new JMenu("Archivo");
+        JMenuItem nuevo = new JMenuItem("Nuevo");
+        JMenuItem abrir = new JMenuItem("Abrir");
+        JMenuItem guardar = new JMenuItem("Guardar");
+        JMenuItem guardarComo = new JMenuItem("Guardar Como");
+        archivo.add(nuevo);
+        archivo.add(abrir);
+        archivo.add(guardar);
+        archivo.add(guardarComo);
+        menuBar.add(archivo);
+        JMenu analizar = new JMenu("Analizar");
+        JMenuItem tokens = new JMenuItem("Ver tabla de Tokens");
+        JMenuItem analizarLexico = new JMenuItem("Analizador Léxico");
+        JMenuItem simbolos = new JMenuItem("Ver tabla de Símbolos");
+        analizar.add(tokens);
+        analizar.add(analizarLexico);
+        analizar.add(simbolos);
+        menuBar.add(analizar);
+        setJMenuBar(menuBar);
+
+        // Configuración del editor de código
+        editor = new JTextArea();
+        JScrollPane scrollPane = new JScrollPane(editor);
+        add(scrollPane, BorderLayout.CENTER);
+
+        // Configuración de las tablas de tokens y símbolos
+        modeloTablaTokens = new DefaultTableModel(new String[]{"Token", "Tipo"}, 0);
+        modeloTablaSimbolos = new DefaultTableModel(new String[]{"Nombre", "Tipo", "Valor"}, 0);
+        tablaTokens = new JTable(modeloTablaTokens);
+        tablaSimbolos = new JTable(modeloTablaSimbolos);
+        ventanaTokens = new JDialog(this, "Tabla de Tokens", true);
+        ventanaTokens.setSize(400, 300);
+        ventanaTokens.setLocationRelativeTo(this);
+        ventanaTokens.add(new JScrollPane(tablaTokens));
+        ventanaSimbolos = new JDialog(this, "Tabla de Símbolos", true);
+        ventanaSimbolos.setSize(400, 300);
+        ventanaSimbolos.setLocationRelativeTo(this);
+        ventanaSimbolos.add(new JScrollPane(tablaSimbolos));
+
+        // Configuración de los botones de acción
+        nuevo.addActionListener(this);
+        abrir.addActionListener(this);
+        guardar.addActionListener(this);
+        guardarComo.addActionListener(this);
+        tokens.addActionListener(this);
+        analizarLexico.addActionListener(this);
+        simbolos.addActionListener(this);
+
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        String accion = e.getActionCommand();
+
+        switch (accion) {
+            case "Nuevo":
+                nuevoArchivo();
+                break;
+            case "Abrir":
+                abrirArchivo();
+                break;
+            case "Guardar":
+                guardarArchivo();
+                break;
+            case "Guardar Como":
+                guardarArchivoComo();
+                break;
+            case "Ver tabla de Tokens":
+                mostrarTablaTokens();
+                break
