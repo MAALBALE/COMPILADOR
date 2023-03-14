@@ -1,0 +1,63 @@
+
+botonMostrarTablaTokens = new JButton("Mostrar tabla de tokens");
+        botonMostrarTablaTokens.addActionListener(new ActionListener() {
+public void actionPerformed(ActionEvent e) {
+                mostrarTablaDeTokens();
+            }
+            };
+ JPanel panelDerecha = new JPanel(new BorderLayout());
+        panelDerecha.add(botonMostrarTablaTokens, BorderLayout.NORTH);
+
+        // Agregar el panel de la derecha al contenedor principal
+        Container contenedor = getContentPane();
+        contenedor.add(panelDerecha, BorderLayout.EAST);
+
+        // Configurar la ventana
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(800, 600);
+        setLocationRelativeTo(null);
+        setVisible(true);
+        
+        private void mostrarTablaDeTokens() {
+        // Implementar el método aquí
+    }
+    
+ ---------------------------------------------------------------------------------------------------------------------   
+    
+    
+    
+    //public class EditorDeCodigo extends JFrame {
+    private JButton botonMostrarTablaTokens;
+
+    
+    
+    public EditorDeCodigo() {
+        super("Editor de código");
+
+        // Crear el botón "Mostrar tabla de tokens"
+        botonMostrarTablaTokens = new JButton("Mostrar tabla de tokens");
+        botonMostrarTablaTokens.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mostrarTablaDeTokens();
+            }
+        });
+
+        // Agregar el botón al panel de la derecha
+        JPanel panelDerecha = new JPanel(new BorderLayout());
+        panelDerecha.add(botonMostrarTablaTokens, BorderLayout.NORTH);
+
+        // Agregar el panel de la derecha al contenedor principal
+        Container contenedor = getContentPane();
+        contenedor.add(panelDerecha, BorderLayout.EAST);
+
+        // Configurar la ventana
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(800, 600);
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    private void mostrarTablaDeTokens() {
+        // Implementar el método aquí
+    }
