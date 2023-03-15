@@ -1,7 +1,9 @@
 
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.Scanner;
 import javax.swing.*;
 
 public class EditorDeCodigo extends JFrame implements ActionListener {
@@ -9,9 +11,9 @@ public class EditorDeCodigo extends JFrame implements ActionListener {
     
 
 
-  // public static void main(String[] args) {
-   //    EditorDeCodigo editor = new EditorDeCodigo();
-   // }
+   public static void main(String[] args) {
+      EditorDeCodigo editor = new EditorDeCodigo();
+   }
     
     private final JTextPane editor;
     private JFileChooser fileChooser;
@@ -93,10 +95,36 @@ btnTablaTokens.addActionListener(e -> mostrarTablaDeTokens());
         }
     }
     
-   public static void main(String[] args) {
-      EditorDeCodigo editor = new EditorDeCodigo();
-        editor.setVisible(true);
+   public static void main(String[] args) throws FileNotFoundException {
+   //   EditorDeCodigo editor = new EditorDeCodigo();
+   //     editor.setVisible(true);
+        
+          // Crear el JFrame
+        JFrame frame = new JFrame("Editor");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800, 600);
+        
+        // Leer el contenido del archivo "AnalizadorLexico"
+        File file = new File("C:/Users/Asus/OneDrive/Documentos/7mo semestre 2023/Compiladores/Compiladores");
+        Scanner scanner = new Scanner(file);
+        String fileContent = "";
+        while (scanner.hasNextLine()) {
+            fileContent += scanner.nextLine() + "\n";
+        }
+        scanner.close();
+        
+        // Mostrar el contenido del archivo en un JTextArea
+        JTextArea textArea = new JTextArea();
+        textArea.setText(fileContent);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        frame.getContentPane().add(scrollPane);
+        
+        // Mostrar el JFrame
+        frame.setVisible(true);
     }
+
+
+    
     
 public void guardarTexto(String texto) {
     editor.setText(texto);
@@ -104,7 +132,5 @@ public void guardarTexto(String texto) {
 }
 
 }
-
-
     
 
