@@ -1,0 +1,44 @@
+import java.awt.BorderLayout;
+import java.util.List;
+import javax.swing.*;
+
+public class AnalizadorLexicoFrame extends JFrame {
+    public AnalizadorLexicoFrame() {
+        // Configurar la ventana
+        setTitle("Analizador Léxico");
+        setSize(800, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Crear y agregar componentes
+        JTextArea codigoFuenteTextArea = new JTextArea();
+        JButton analizarButton = new JButton("Analizar");
+        JTextArea resultadoTextArea = new JTextArea();
+        resultadoTextArea.setEditable(false);
+
+        // Agregar los componentes al panel principal
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(new JScrollPane(codigoFuenteTextArea), BorderLayout.CENTER);
+        panel.add(analizarButton, BorderLayout.SOUTH);
+        panel.add(new JScrollPane(resultadoTextArea), BorderLayout.EAST);
+        add(panel);
+
+        // Agregar un controlador de eventos para el botón "Analizar"
+        analizarButton.addActionListener(e -> {
+            String codigoFuente = codigoFuenteTextArea.getText();
+            AnalizadorLexico analizador = new AnalizadorLexico(codigoFuente);
+            try {
+                List<Token> tokens = analizador.analizar();
+                StringBuilder resultado = new StringBuilder();
+                for (Token token : tokens) {
+                    resultado.append(token.toString()).append("\n");
+                }
+                resultadoTextArea.setText(resultado.toString());
+            } catch (AnalizadorLexicoException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        
+        
+    }
+}
