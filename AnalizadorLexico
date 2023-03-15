@@ -18,6 +18,9 @@ public class AnalizadorLexico {
         this.columnaActual = 1;
     }
 
+    
+
+    
     AnalizadorLexico() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -193,10 +196,10 @@ while (tokenizer.hasMoreTokens()) {
         columna += token.length() + 1;
     }
 }}
-  public static void main(String[] args) {
-       
-   }
 
 
-
+    public static void main(String[] args) {
+        AnalizadorLexicoFrame frame = new AnalizadorLexicoFrame();
+        frame.setVisible(true);
+    }
 }
