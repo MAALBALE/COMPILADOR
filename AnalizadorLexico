@@ -17,8 +17,54 @@ public class AnalizadorLexico {
         this.numeroDeLinea = 1;
         this.columnaActual = 1;
     }
-
-    
+    //a partir de esta linea se declara el metodo Analizar
+ public static List<Token> analizar(String codigo) throws AnalizadorLexicoException {
+    List<Token> tokens = new ArrayList<Token>();
+    int i = 0;
+    while (i < codigo.length()) {
+        char c = codigo.charAt(i);
+        if (Character.isWhitespace(c)) {
+            // Ignorar caracteres de espacio en blanco
+            i++;
+        } else if (Character.isDigit(c)) {
+            // Construir un token numérico
+            int valor = 0;
+            while (i < codigo.length() && Character.isDigit(c)) {
+                valor = valor * 10 + Character.getNumericValue(c);
+                i++;
+                if (i < codigo.length()) {
+                    c = codigo.charAt(i);
+                }
+            }
+            tokens.add(new Token(Token.Tipo.NUMERO, Integer.toString(valor)));
+        } else if (Character.isLetter(c)) {
+            // Construir un token identificador o palabra clave
+            StringBuilder sb = new StringBuilder();
+            while (i < codigo.length() && Character.isLetterOrDigit(c)) {
+                sb.append(c);
+                i++;
+                if (i < codigo.length()) {
+                    c = codigo.charAt(i);
+                }
+            }
+            String valor = sb.toString();
+            if (valor.equals("if")) {
+                tokens.add(new Token(Token.Tipo.IF, valor));
+            } else if (valor.equals("else")) {
+                tokens.add(new Token(Token.Tipo.ELSE, valor));
+            } else if (valor.equals("while")) {
+                tokens.add(new Token(Token.Tipo.WHILE, valor));
+            } else {
+                tokens.add(new Token(Token.Tipo.IDENTIFICADOR, valor));
+            }
+        } else {
+            // Caracter no reconocido
+            throw new AnalizadorLexicoException("Caracter no reconocido: " + c);
+        }
+    }
+    return tokens;
+}
+//hasta esta linea
 
     
     AnalizadorLexico() {
