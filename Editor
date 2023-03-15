@@ -1,0 +1,110 @@
+
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import javax.swing.*;
+
+public class EditorDeCodigo extends JFrame implements ActionListener {
+    
+    
+
+
+  // public static void main(String[] args) {
+   //    EditorDeCodigo editor = new EditorDeCodigo();
+   // }
+    
+    private final JTextPane editor;
+    private JFileChooser fileChooser;
+    private Object contentPane;
+    
+    public EditorDeCodigo() {
+        // Configurar la ventana principal
+        super("Editor de Código");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(800, 600);
+        
+        // Crear el área de texto del editor
+        editor = new JTextPane();
+        editor.setFont(new Font("Consolas", Font.PLAIN, 12));
+        JScrollPane scrollPane = new JScrollPane(editor);
+        getContentPane().add(scrollPane);
+        
+        // Crear el menú del editor
+        JMenuBar menuBar = new JMenuBar();
+        JMenu archivoMenu = new JMenu("Archivo");
+        JMenuItem abrirItem = new JMenuItem("Abrir");
+        abrirItem.addActionListener(this);
+        archivoMenu.add(abrirItem);
+        JMenuItem guardarItem = new JMenuItem("Guardar");
+        guardarItem.addActionListener(this);
+        archivoMenu.add(guardarItem);
+        menuBar.add(archivoMenu);
+        setJMenuBar(menuBar);
+        
+        // Crear el selector de archivos
+        fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File("."));
+        
+        
+
+
+
+    }
+ 
+   
+
+    private void mostrarTablaDeTokens() {
+        // Implementar el método aquí
+       JButton btnTablaTokens = new JButton("Tabla de Tokens");
+btnTablaTokens.addActionListener(e -> mostrarTablaDeTokens());
+ //panelBotones.add(btnTablaTokens);
+    }  
+    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        
+        
+            
+         // Manejar los eventos del menú
+        if (e.getActionCommand().equals("Abrir")) {
+            int returnVal = fileChooser.showOpenDialog(this);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fileChooser.getSelectedFile();
+                try {
+                    BufferedReader reader = new BufferedReader(new FileReader(file));
+                    editor.read(reader, null);
+                    reader.close();
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Error al abrir el archivo");
+                }
+            }
+        } else if (e.getActionCommand().equals("Guardar")) {
+            int returnVal = fileChooser.showSaveDialog(this);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fileChooser.getSelectedFile();
+                try {
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+                    editor.write(writer);
+                    writer.close();
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(this, "Error al guardar el archivo");
+                }
+            }
+        }
+    }
+    
+   public static void main(String[] args) {
+      EditorDeCodigo editor = new EditorDeCodigo();
+        editor.setVisible(true);
+    }
+    
+public void guardarTexto(String texto) {
+    editor.setText(texto);
+   // AnalizadorLexico.analizar(texto);
+}
+
+}
+
+
+    
+
