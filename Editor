@@ -1,136 +1,78 @@
-
-
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.util.Scanner;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
-public class EditorDeCodigo extends JFrame implements ActionListener {
-    
-    
+public class Editor extends JFrame {
+    JTextArea textArea;
+    JScrollPane scrollPane;
+    JPanel panel;
+    JButton analizarButton;
+    JButton limpiarButton;
+    JButton salirButton;
 
+    public Editor() {
+        // Configuración del JTextArea
+        textArea = new JTextArea();
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
 
-   public static void main(String[] args) {
-      EditorDeCodigo editor = new EditorDeCodigo();
-   }
-    
-    private final JTextPane editor;
-    private JFileChooser fileChooser;
-    private Object contentPane;
-    
-    public EditorDeCodigo() {
-        // Configurar la ventana principal
-        super("Editor de Código");
+        // Configuración del JScrollPane
+        scrollPane = new JScrollPane(textArea);
+
+        // Configuración del JPanel
+        panel = new JPanel();
+        panel.setLayout(new GridLayout(1, 3));
+
+        // Configuración del botón analizar
+        analizarButton = new JButton("Analizar");
+        analizarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String codigo = textArea.getText();
+                AnalizadorLexico al = new AnalizadorLexico(codigo);
+                ArrayList<Token> tokens = al.analizar();
+                for (Token t : tokens) {
+                    System.out.println(t);
+                }
+            }
+        });
+
+        // Configuración del botón limpiar
+        limpiarButton = new JButton("Limpiar");
+        limpiarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                textArea.setText("");
+            }
+        });
+
+        // Configuración del botón salir
+        salirButton = new JButton("Salir");
+        salirButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
+        // Agregar botones al panel
+        panel.add(analizarButton);
+        panel.add(limpiarButton);
+        panel.add(salirButton);
+
+        // Agregar componentes al JFrame
+        add(scrollPane, BorderLayout.CENTER);
+        add(panel, BorderLayout.SOUTH);
+
+        // Configuración del JFrame
+        setSize(500, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
-        
-        // Crear el área de texto del editor
-        editor = new JTextPane();
-        editor.setFont(new Font("Consolas", Font.PLAIN, 12));
-        JScrollPane scrollPane = new JScrollPane(editor);
-        getContentPane().add(scrollPane);
-        
-        // Crear el menú del editor
-        JMenuBar menuBar = new JMenuBar();
-        JMenu archivoMenu = new JMenu("Archivo");
-        JMenuItem abrirItem = new JMenuItem("Abrir");
-        abrirItem.addActionListener(this);
-        archivoMenu.add(abrirItem);
-        JMenuItem guardarItem = new JMenuItem("Guardar");
-        guardarItem.addActionListener(this);
-        archivoMenu.add(guardarItem);
-        menuBar.add(archivoMenu);
-        setJMenuBar(menuBar);
-        
-        // Crear el selector de archivos
-        fileChooser = new JFileChooser();
-        fileChooser.setCurrentDirectory(new File("."));
-        
-        
-
-
-
-    }
- 
-   
-
-    private void mostrarTablaDeTokens() {
-        // Implementar el método aquí
-       JButton btnTablaTokens = new JButton("Tabla de Tokens");
-btnTablaTokens.addActionListener(e -> mostrarTablaDeTokens());
- //panelBotones.add(btnTablaTokens);
-    }  
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        
-        
-            
-         // Manejar los eventos del menú
-        if (e.getActionCommand().equals("Abrir")) {
-            int returnVal = fileChooser.showOpenDialog(this);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fileChooser.getSelectedFile();
-                try {
-                    BufferedReader reader = new BufferedReader(new FileReader(file));
-                    editor.read(reader, null);
-                    reader.close();
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(this, "Error al abrir el archivo");
-                }
-            }
-        } else if (e.getActionCommand().equals("Guardar")) {
-            int returnVal = fileChooser.showSaveDialog(this);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fileChooser.getSelectedFile();
-                try {
-                    BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-                    editor.write(writer);
-                    writer.close();
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(this, "Error al guardar el archivo");
-                }
-            }
-        }
-    }
-    
-   public static void main(String[] args) throws FileNotFoundException {
-   //   EditorDeCodigo editor = new EditorDeCodigo();
-   //     editor.setVisible(true);
-        
-          // Crear el JFrame
-        JFrame frame = new JFrame("Editor");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
-        
-        // Leer el contenido del archivo "AnalizadorLexico"
-        File file = new File("C:/Users/Asus/OneDrive/Documentos/7mo semestre 2023/Compiladores/Compiladores");
-        Scanner scanner = new Scanner(file);
-        String fileContent = "";
-        while (scanner.hasNextLine()) {
-            fileContent += scanner.nextLine() + "\n";
-        }
-        scanner.close();
-        
-        // Mostrar el contenido del archivo en un JTextArea
-        JTextArea textArea = new JTextArea();
-        textArea.setText(fileContent);
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        frame.getContentPane().add(scrollPane);
-        
-        // Mostrar el JFrame
-        frame.setVisible(true);
+        setVisible(true);
     }
 
-
-    
-    
-public void guardarTexto(String texto) {
-    editor.setText(texto);
-   // AnalizadorLexico.analizar(texto);
+    public static void main(String[] args) {
+        new Editor();
+    }
 }
-
-}
-    
-
