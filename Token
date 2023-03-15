@@ -1,0 +1,15 @@
+
+    public enum Token {
+    Reservadas,
+    Igual,
+    Suma,
+    Resta,
+    Multiplicacion,
+    Division,
+    Identificador,
+    Numero,
+    ERROR,
+    
+}
+
+
